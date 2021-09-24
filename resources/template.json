@@ -1,0 +1,109 @@
+{
+    "targets": [
+        {
+            "isStage": true,
+            "name": "Stage",
+            "variables": {},
+            "lists": {},
+            "broadcasts": {},
+            "blocks": {},
+            "comments": {},
+            "currentCostume": 0,
+            "costumes": [
+                {
+                    "assetId": "cd21514d0531fdffb22204e0ec5ed84a",
+                    "name": "háttér1",
+                    "md5ext": "cd21514d0531fdffb22204e0ec5ed84a.svg",
+                    "dataFormat": "svg",
+                    "rotationCenterX": 240,
+                    "rotationCenterY": 180
+                }
+            ],
+            "sounds": [],
+            "volume": 100,
+            "layerOrder": 0,
+            "tempo": 60,
+            "videoTransparency": 50,
+            "videoState": "on",
+            "textToSpeechLanguage": null
+        },
+        {
+            "isStage": false,
+            "name": "szereplő1",
+            "variables": {},
+            "lists": {},
+            "broadcasts": {},
+            "blocks": {
+                "00000000000000000001": {
+                    "opcode": "event_whenflagclicked",
+                    "next": "00000000000000000002",
+                    "parent": null,
+                    "inputs": {},
+                    "fields": {},
+                    "shadow": false,
+                    "topLevel": true,
+                    "x": 36,
+                    "y": 153
+                },
+                "00000000000000000002": {
+                    "opcode": "pen_clear",
+                    "next": "00000000000000000003",
+                    "parent": "00000000000000000001",
+                    "inputs": {},
+                    "fields": {},
+                    "shadow": false,
+                    "topLevel": false
+                },
+                "00000000000000000003": {
+                    "opcode": "pen_setPenSizeTo",
+                    "next": null,
+                    "parent": "00000000000000000002",
+                    "inputs": {
+                        "SIZE": [
+                            1,
+                            [
+                                4,
+                                "2"
+                            ]
+                        ]
+                    },
+                    "fields": {},
+                    "shadow": false,
+                    "topLevel": false
+                }
+            },
+            "comments": {},
+            "currentCostume": 0,
+            "costumes": [
+                {
+                    "assetId": "54b235d3219beb83bc6212d32adc07e9",
+                    "name": "jelmez1",
+                    "bitmapResolution": 1,
+                    "md5ext": "54b235d3219beb83bc6212d32adc07e9.svg",
+                    "dataFormat": "svg",
+                    "rotationCenterX": 2.2679832279140157,
+                    "rotationCenterY": 2.347643244817874
+                }
+            ],
+            "sounds": [],
+            "volume": 100,
+            "layerOrder": 1,
+            "visible": true,
+            "x": 36,
+            "y": 28,
+            "size": 100,
+            "direction": 90,
+            "draggable": false,
+            "rotationStyle": "all around"
+        }
+    ],
+    "monitors": [],
+    "extensions": [
+        "pen"
+    ],
+    "meta": {
+        "semver": "3.0.0",
+        "vm": "0.2.0-prerelease.20210510162256",
+        "agent": "Novy's & Szaki's png to scratch code"
+    }
+}
