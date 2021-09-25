@@ -8,10 +8,10 @@ const scratchFunctions = {
     setPenColorAndMove: require('./blocks/setPenColor').setPenColorAndMove,
     addNewSprite: require('./blocks/addNewSprite').addNewSprite,
     hide: require('./blocks/hide').hide,
+    addDelay: require('./blocks/delay').addDelay,
 };
 var scratchCodeJson = require('./resources/template.json');
 const globals = require('./globals');
-const { zip } = require('zip-local');
 
 function rgba2hex(orig) {
     var
@@ -33,21 +33,28 @@ async function main() {
         .write('./resources/resized.jpg');
 
     //Read rsized image and get pixels hex color
-    let imageY = image.getHeight();
-    let imageX = image.getWidth();
+    const imageY = image.getHeight();
+    const imageX = image.getWidth();
+    const imageStartY = 0 - ((imageX / 2) * 2); // Center image, *2 because each pixel in image is drawn by 2 pixels in scratch
     for (let imgY = 0; imgY <= imageY; imgY++) {
         //Move to next line
         console.log("Line Y", imgY);
         if (imgY != 0 && imgY % 5 == 0) {
             scratchCodeJson = scratchFunctions.hide(scratchCodeJson);
             scratchCodeJson = scratchFunctions.addNewSprite(scratchCodeJson);
+            if (globals.delay > 0) {
+                scratchCodeJson = scratchFunctions.addDelay(scratchCodeJson, globals.delay);
+            }
         } else
             scratchCodeJson = scratchFunctions.penUp(scratchCodeJson);
-        scratchCodeJson = scratchFunctions.addGotoBlock(scratchCodeJson, -200, 150 - (imgY * 2));
+        scratchCodeJson = scratchFunctions.addGotoBlock(scratchCodeJson, imageStartY, 150 - (imgY * 2));
         for (let imgX = 0; imgX <= imageX; imgX++) {
             const rgba = Jimp.intToRGBA(image.getPixelColor(imgX, imgY));
             const hexColor = rgba2hex(rgba);
             scratchCodeJson = scratchFunctions.setPenColorAndMove(scratchCodeJson, hexColor, imgX);
+            if (globals.delayXAxis && globals.delay > 0 && imgX % globals.delayXEveryXFrame == 0) {
+                scratchCodeJson = scratchFunctions.addDelay(scratchCodeJson, globals.delay);
+            }
         }
     }
     scratchCodeJson = scratchFunctions.hide(scratchCodeJson);
@@ -59,7 +66,7 @@ async function main() {
     fs.copyFileSync('./resources/cd21514d0531fdffb22204e0ec5ed84a.svg', './output/uncompressed/cd21514d0531fdffb22204e0ec5ed84a.svg');
     console.log("Writing done");
 
-    if (globals.exportProjetFile) {
+    if (globals.exportProjectFile) {
         console.log("Compressing project file...");
         let zipFiles = zipper.sync.zip("./output/uncompressed/");
         zipFiles.compress();
