@@ -24,7 +24,7 @@ exports.addNewSprite = function (inputJson) {
         "topLevel": false,
     };
     globals.spriteId++;
-    globals.lastBlockLength = 2;
+    globals.lastBlockLength = 3;
     inputJson.targets[0].broadcasts[zeroPad(globals.spriteId + "bc", 20)] = "msg" + globals.spriteId;
     inputJson.targets.push({
         "isStage": false,
@@ -51,7 +51,7 @@ exports.addNewSprite = function (inputJson) {
             },
             "00000000000000000002": {
                 "opcode": "pen_setPenSizeTo",
-                "next": null,
+                "next": "00000000000000000003",
                 "parent": "00000000000000000001",
                 "inputs": {
                     "SIZE": [
@@ -62,6 +62,15 @@ exports.addNewSprite = function (inputJson) {
                         ]
                     ]
                 },
+                "fields": {},
+                "shadow": false,
+                "topLevel": false
+            },
+            "00000000000000000003": {
+                "opcode": "pen_penUp",
+                "next": null,
+                "parent": "00000000000000000002",
+                "inputs": {},
                 "fields": {},
                 "shadow": false,
                 "topLevel": false

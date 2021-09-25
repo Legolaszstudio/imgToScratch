@@ -42,8 +42,8 @@ async function main() {
         if (imgY != 0 && imgY % 5 == 0) {
             scratchCodeJson = scratchFunctions.hide(scratchCodeJson);
             scratchCodeJson = scratchFunctions.addNewSprite(scratchCodeJson);
-            if (globals.delay > 0) {
-                scratchCodeJson = scratchFunctions.addDelay(scratchCodeJson, globals.delay);
+            if (globals.delayYAxis > 0) {
+                scratchCodeJson = scratchFunctions.addDelay(scratchCodeJson, globals.delayYAxis);
             }
         } else
             scratchCodeJson = scratchFunctions.penUp(scratchCodeJson);
@@ -52,8 +52,8 @@ async function main() {
             const rgba = Jimp.intToRGBA(image.getPixelColor(imgX, imgY));
             const hexColor = rgba2hex(rgba);
             scratchCodeJson = scratchFunctions.setPenColorAndMove(scratchCodeJson, hexColor, imgX);
-            if (globals.delayXAxis && globals.delay > 0 && imgX % globals.delayXEveryXFrame == 0) {
-                scratchCodeJson = scratchFunctions.addDelay(scratchCodeJson, globals.delay);
+            if (globals.delayXAxis > 0 && imgX % globals.delayXEveryXFrame == 0) {
+                scratchCodeJson = scratchFunctions.addDelay(scratchCodeJson, globals.delayXAxis);
             }
         }
     }
