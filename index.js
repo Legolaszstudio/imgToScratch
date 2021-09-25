@@ -1,5 +1,6 @@
 const Jimp = require('jimp');
 const fs = require('fs');
+const zipper = require("zip-local");
 const scratchFunctions = {
     penDown: require('./blocks/penDown').penDown,
     penUp: require('./blocks/penUp').penUp,
@@ -9,6 +10,8 @@ const scratchFunctions = {
     hide: require('./blocks/hide').hide,
 };
 var scratchCodeJson = require('./resources/template.json');
+const globals = require('./globals');
+const { zip } = require('zip-local');
 
 function rgba2hex(orig) {
     var
@@ -51,10 +54,21 @@ async function main() {
 
     // Write output to file
     console.log("Writing output...");
-    fs.writeFileSync('./output/project.json', JSON.stringify(scratchCodeJson), 'utf8');
-    fs.copyFileSync('./resources/54b235d3219beb83bc6212d32adc07e9.svg', './output/54b235d3219beb83bc6212d32adc07e9.svg');
-    fs.copyFileSync('./resources/cd21514d0531fdffb22204e0ec5ed84a.svg', './output/cd21514d0531fdffb22204e0ec5ed84a.svg');
+    fs.writeFileSync('./output/uncompressed/project.json', JSON.stringify(scratchCodeJson), 'utf8');
+    fs.copyFileSync('./resources/54b235d3219beb83bc6212d32adc07e9.svg', './output/uncompressed/54b235d3219beb83bc6212d32adc07e9.svg');
+    fs.copyFileSync('./resources/cd21514d0531fdffb22204e0ec5ed84a.svg', './output/uncompressed/cd21514d0531fdffb22204e0ec5ed84a.svg');
     console.log("Writing done");
+
+    if (globals.exportProjetFile) {
+        console.log("Compressing project file...");
+        let zipFiles = zipper.sync.zip("./output/uncompressed/");
+        zipFiles.compress();
+        zipFiles.save_async = false;
+        zipFiles.save("./output/output.sb3");
+        console.log("SB3 file created (./output/output.sb3), have a nice day!");
+    } else {
+        console.log("Uncompressed files created (./output/uncompressed/), have a nice day!");
+    }
 }
 
 main();

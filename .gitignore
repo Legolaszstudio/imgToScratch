@@ -105,5 +105,7 @@ dist
 
 resources/resized.jpg
 __input.jpg
-input.jpg
+input.*
 output/*
+output/uncompressed/*
+!output/uncompressed
