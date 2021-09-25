@@ -30,7 +30,7 @@ function rgba2hex(orig) {
 
 async function main() {
     //Resize image to 250*250
-    const image = await Jimp.read('input.jpg');
+    const image = await Jimp.read(globals.inputFile);
     const ratio = Math.min(200 / image.getWidth(), 150 / image.getHeight());
     await image
         .resize(image.getWidth() * ratio, image.getHeight() * ratio)
