@@ -4,7 +4,9 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
+    "fast-folder-size": "^1.4.0",
     "jimp": "^0.16.1",
+    "nanocolors": "^0.2.3",
     "zip-local": "^0.3.4"
   }
 }
