@@ -24,4 +24,4 @@ exports.addDelay = function (inputJson, delay) {
         "topLevel": false
     };
     return inputJson;
-}
+};

@@ -16,4 +16,4 @@ exports.hide = function (inputJson) {
         "topLevel": false
     };
     return inputJson;
-}
+};

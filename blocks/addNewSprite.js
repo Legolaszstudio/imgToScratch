@@ -28,7 +28,7 @@ exports.addNewSprite = function (inputJson) {
     inputJson.targets[0].broadcasts[zeroPad(globals.spriteId + "bc", 20)] = "msg" + globals.spriteId;
     inputJson.targets.push({
         "isStage": false,
-        "name": `szereplő${globals.spriteId}`,
+        "name": `lineX${(globals.spriteId * globals.splitSpritesByYLines) - globals.splitSpritesByYLines}-${globals.spriteId * globals.splitSpritesByYLines}`,
         "variables": {},
         "lists": {},
         "broadcasts": {},
@@ -101,4 +101,4 @@ exports.addNewSprite = function (inputJson) {
         "rotationStyle": "all around"
     });
     return inputJson;
-}
+};

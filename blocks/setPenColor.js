@@ -49,4 +49,4 @@ exports.setPenColorAndMove = function (inputJson, color, x) {
         "topLevel": false
     };
     return inputJson;
-}
+};

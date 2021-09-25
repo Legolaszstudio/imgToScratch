@@ -39,7 +39,7 @@ async function main() {
     for (let imgY = 0; imgY <= imageY; imgY++) {
         //Move to next line
         console.log("Line Y", imgY);
-        if (imgY != 0 && imgY % 5 == 0) {
+        if (imgY != 0 && imgY % globals.splitSpritesByYLines === 0) {
             scratchCodeJson = scratchFunctions.hide(scratchCodeJson);
             scratchCodeJson = scratchFunctions.addNewSprite(scratchCodeJson);
             if (globals.delayYAxis > 0) {

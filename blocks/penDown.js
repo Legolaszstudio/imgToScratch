@@ -16,4 +16,4 @@ exports.penDown = function (inputJson) {
         "topLevel": false
     };
     return inputJson;
-}
+};
