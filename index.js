@@ -18,12 +18,16 @@ var scratchCodeJson = require('./resources/template.json');
 const globals = require('./globals');
 
 function rgba2hex(orig) {
-    var
-        rgb = [orig.r, orig.g, orig.b],
-        hex = rgb ?
-            (rgb[0] | 1 << 8).toString(16).slice(1) +
-            (rgb[1] | 1 << 8).toString(16).slice(1) +
-            (rgb[2] | 1 << 8).toString(16).slice(1) : orig;
+    const rgb = [orig.r, orig.g, orig.b];
+
+    if (orig.a < 255) {
+        return globals.transparentHex;
+    }
+
+    const hex = rgb ?
+        (rgb[0] | 1 << 8).toString(16).slice(1) +
+        (rgb[1] | 1 << 8).toString(16).slice(1) +
+        (rgb[2] | 1 << 8).toString(16).slice(1) : orig;
 
     return "#" + hex.toLowerCase();
 }
@@ -31,16 +35,23 @@ function rgba2hex(orig) {
 async function main() {
     //Resize image to 250*250
     const image = await Jimp.read(globals.inputFile);
-    const ratio = Math.min(200 / image.getWidth(), 150 / image.getHeight());
+    const ratio = Math.min(
+        globals.scratchMaxX / image.getWidth(),
+        globals.scratchMaxY / image.getHeight(),
+    );
     await image
-        .resize(image.getWidth() * ratio, image.getHeight() * ratio)
+        .resize(
+            image.getWidth() * ratio,
+            image.getHeight() * ratio,
+        )
         .write('./resources/resized.jpg');
 
     //Read rsized image and get pixels hex color
-    const imageY = image.getHeight();
-    const imageX = image.getWidth();
-    const imageStartY = 0 - ((imageX / 2) * 2); // Center image, *2 because each pixel in image is drawn by 2 pixels in scratch
-    for (let imgY = 0; imgY <= imageY; imgY++) {
+    const fullImageY = image.getHeight();
+    const fullImageX = image.getWidth();
+    const imageStartX = 0 - ((fullImageX / 2) * 2); // Center image, *2 because each pixel in image is drawn by 2 pixels in scratch
+    const imageStartY = 0 + ((fullImageY / 2) * 2);
+    for (let imgY = 0; imgY <= fullImageY; imgY++) {
         //Move to next line
         console.log(`${nanocolors.gray("Line Y")}`, nanocolors.gray(imgY));
         if (imgY != 0 && imgY % globals.splitSpritesByYLines === 0) {
@@ -51,8 +62,8 @@ async function main() {
             }
         } else
             scratchCodeJson = scratchFunctions.penUp(scratchCodeJson);
-        scratchCodeJson = scratchFunctions.addGotoBlock(scratchCodeJson, imageStartY, 150 - (imgY * 2));
-        for (let imgX = 0; imgX <= imageX; imgX++) {
+        scratchCodeJson = scratchFunctions.addGotoBlock(scratchCodeJson, imageStartX, imageStartY - (imgY * 2));
+        for (let imgX = 0; imgX <= fullImageX; imgX++) {
             const rgba = Jimp.intToRGBA(image.getPixelColor(imgX, imgY));
             const hexColor = rgba2hex(rgba);
             scratchCodeJson = scratchFunctions.setPenColorAndMove(scratchCodeJson, hexColor, imgX);
@@ -83,7 +94,7 @@ async function main() {
     if (globals.showStats) {
         console.log(nanocolors.gray("\n------------------------------\n"));
         console.log(nanocolors.green("Project stats:\n"));
-        console.log(nanocolors.green("Resized img resolution: "), nanocolors.yellow(`${imageX}*${imageY} =`), nanocolors.red(`${imageX * imageY}px`));
+        console.log(nanocolors.green("Resized img resolution: "), nanocolors.yellow(`${fullImageX}*${fullImageY} =`), nanocolors.red(`${fullImageX * fullImageY}px`));
         console.log(nanocolors.green("Sprites: "), nanocolors.yellow(scratchCodeJson.targets.length - 1));
         console.log(nanocolors.green("Messages: "), nanocolors.yellow(Object.keys(scratchCodeJson.targets[0].broadcasts).length));
         const blockCount = scratchCodeJson.targets.map((curr) =>
